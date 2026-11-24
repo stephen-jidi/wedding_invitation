@@ -349,16 +349,12 @@ tx=[];ty=[];ta=[];var m=Math.ceil(L/ST),q;
 for(i=0;i<=m;i++){q=p0.getPointAtLength(Math.min(L,i*ST));tx.push(q.x);ty.push(q.y)}
 for(i=0;i<=m;i++){var u=Math.max(0,i-2),v=Math.min(m,i+2);ta.push(Math.atan2(ty[v]-ty[u],tx[v]-tx[u])*57.3)}
 lq=-1;place(true)}
-var sx=0,sa=90;
-function place(force){var vy=innerHeight*.42,Y=scrollY+vy,n=ty.length-1;
-Y=Math.min(ty[n],Math.max(ty[0],Y));
-/* find the path point at exactly this page height, so the plane's screen height never wobbles */
-var lo=0,hi=n;while(hi-lo>1){var md=(lo+hi)>>1;if(ty[md]<=Y)lo=md;else hi=md}
-var d=ty[hi]-ty[lo],k=d>0?(Y-ty[lo])/d:0,x=tx[lo]+(tx[hi]-tx[lo])*k,a=ta[lo]+(ta[hi]-ta[lo])*k;
-if(force){sx=x;sa=a}else{sx+=(x-sx)*.3;sa+=(a-sa)*.3}
-pl.style.transform="translate3d("+sx+"px,"+vy+"px,0) rotate("+sa+"deg)";
-var qq=Math.floor(Y/80);if(qq!==lq){lq=qq;$("clr").setAttribute("height",(qq+1)*80)}
-return Math.abs(x-sx)>.3||Math.abs(a-sa)>.2}
+function place(force){var t=Math.min(1,Math.max(0,(scrollY+innerHeight*.42)/H));
+cur=force?t:cur+(t-cur)*.1;var f=cur*L/ST,i=Math.min(tx.length-2,Math.floor(f)),k=f-i,
+x=tx[i]+(tx[i+1]-tx[i])*k,y=ty[i]+(ty[i+1]-ty[i])*k,a=ta[i]+(ta[i+1]-ta[i])*k;
+pl.style.transform="translate3d("+x+"px,"+(y-scrollY)+"px,0) rotate("+a+"deg)";
+var qq=Math.floor(y/80);if(qq!==lq){lq=qq;$("clr").setAttribute("height",(qq+1)*80)}
+return Math.abs(t-cur)>.0003}
 function loop(){run=place(false)?(requestAnimationFrame(loop),true):false}
 function wake(){if(!run){run=true;requestAnimationFrame(loop)}}
 
