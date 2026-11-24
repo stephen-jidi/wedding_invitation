@@ -273,6 +273,7 @@ doc.classList.add("lock");
 function reveal(){var io=new IntersectionObserver(function(e){e.forEach(function(x){if(x.isIntersecting){x.target.classList.add("in");io.unobserve(x.target)}})},{threshold:.12});
 document.querySelectorAll(".rv").forEach(function(el){io.observe(el)})}
 
+reveal(); /* run now, behind the closed envelope, so the hero text is already in place when it opens */
 /* ===== OPENING REVEAL ===== */
 var opened=false;
 function burst(){var c=$("burst"),g=c.getContext("2d");c.width=innerWidth*dpr;c.height=innerHeight*dpr;g.scale(dpr,dpr);
@@ -390,7 +391,7 @@ requestAnimationFrame(f)}
 setTimeout(function(){pos=scrollY;requestAnimationFrame(f)},1800)}
 
 /* ===== START AFTER REVEAL ===== */
-function start(){reveal();decor();glow();build();if(!nomo&&innerWidth<700)autoScroll();
+function start(){decor();glow();build();if(!nomo&&innerWidth<700)autoScroll();
 addEventListener("scroll",function(){wake();if(!nomo&&!pq){pq=true;requestAnimationFrame(par)}},{passive:true});
 var rb;addEventListener("resize",function(){clearTimeout(rb);rb=setTimeout(function(){if(innerWidth!==lw){lw=innerWidth;build()}},200)});
 if(window.ResizeObserver){var lh=0;new ResizeObserver(function(){var h=document.body.scrollHeight;if(Math.abs(h-lh)>40){lh=h;build()}}).observe(document.body)}
